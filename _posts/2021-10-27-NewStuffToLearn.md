@@ -1,4 +1,10 @@
-# Things I Need To Learn and Practice
+---
+toc: false
+layout: post
+description: python libraires and other tools and concepts that i need to learn
+categories: [markdown]
+title: Stuff to Learn
+---
 
 ## Python Library
 
