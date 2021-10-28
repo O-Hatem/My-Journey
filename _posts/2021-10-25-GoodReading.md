@@ -1,4 +1,11 @@
-# Great Reading Articles
+---
+toc: true
+layout: post
+description: Articles and Blog posts that i found intersting to read.
+categories: [markdown]
+title: Good Reading Articles
+---
+# Good Reading Articles
 
 
 * [Advice for Better Blog Posts](https://www.fast.ai/2019/05/13/blogging-advice/) By Rachel Thomas
