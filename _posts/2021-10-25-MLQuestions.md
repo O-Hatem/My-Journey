@@ -1,7 +1,12 @@
-# ML-related Questions
+---
+toc: true
+layout: post
+description: Questions about ML problems like cleaning data, cross validation, etc
+categories: [markdown]
+title: ML Questions
+---
 
-1. TOC
-{:toc}
+# ML-related Questions
 
 ## What is Cross Validation and what is it used for?
 
