@@ -1,10 +1,11 @@
 ---
-toc: true
+toc: false
 layout: post
 description: Articles and Blog posts that i found intersting to read.
 categories: [markdown]
 title: Good Reading Articles
 ---
+
 # Good Reading Articles
 
 
