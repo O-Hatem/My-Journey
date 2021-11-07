@@ -1,0 +1,3177 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="twitter:card" content="summary_large_image" /><!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>Categorical Encodings | Blogging My Progress (Not perfections)</title>
+<meta name="generator" content="Jekyll v4.1.1" />
+<meta property="og:title" content="Categorical Encodings" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="a tutorial on categorical encodings, how to use them, and when" />
+<meta property="og:description" content="a tutorial on categorical encodings, how to use them, and when" />
+<link rel="canonical" href="https://o-hatem.github.io/My-Journey-/jupyter/2021/11/06/Categorical_Encoding.html" />
+<meta property="og:url" content="https://o-hatem.github.io/My-Journey-/jupyter/2021/11/06/Categorical_Encoding.html" />
+<meta property="og:site_name" content="Blogging My Progress (Not perfections)" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2021-11-06T00:00:00-05:00" />
+<script type="application/ld+json">
+{"url":"https://o-hatem.github.io/My-Journey-/jupyter/2021/11/06/Categorical_Encoding.html","@type":"BlogPosting","headline":"Categorical Encodings","dateModified":"2021-11-06T00:00:00-05:00","datePublished":"2021-11-06T00:00:00-05:00","mainEntityOfPage":{"@type":"WebPage","@id":"https://o-hatem.github.io/My-Journey-/jupyter/2021/11/06/Categorical_Encoding.html"},"description":"a tutorial on categorical encodings, how to use them, and when","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/My-Journey-/assets/css/style.css"><link type="application/atom+xml" rel="alternate" href="https://o-hatem.github.io/My-Journey-/feed.xml" title="Blogging My Progress (Not perfections)" /><link rel="shortcut icon" type="image/x-icon" href="/My-Journey-/images/favicon.ico"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Primer/15.2.0/primer.css" integrity="sha512-xTz2ys4coGAOz8vuV1NcQBkgVmKhsSEtjbqyMJbBHRplFuvKIUo6xhLHpAyPt9mfR6twHJgn9OgVLuqOvjeBhg==" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css" integrity="sha512-1PKOgIY59xJ8Co8+NE6FZ+LOAZKjy+KY8iq0G4B3CyeY6wYHN3yt9PW0XpSriVlkMXe40PTKnXrLnZ9+fkDaog==" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.12.0/katex.min.css" integrity="sha512-h7nl+xz8wgDlNM4NqKEM4F1NkIRS17M9+uJwIGwuo8vGqIl4BhuCKdxjWEINm+xyrUjNCnK5dCrhM0sj+wTIXw==" crossorigin="anonymous" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.12.0/katex.min.js" integrity="sha512-/CMIhXiDA3m2c9kzRyd97MTb3MC6OVnx4TElQ7fkkoRghwDf6gi41gaT1PwF270W6+J60uTmwgeRpNpJdRV6sg==" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.12.0/contrib/auto-render.min.js" integrity="sha512-Do7uJAaHZm5OLrIv/yN4w0iG1dbu01kzdMNnFfu/mAqgUk6Nniv2JYHcwH+cNwjqgLcqcuBBk+JRvprLVI8azg==" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha512-0doc9hKxR3PYwso42RD1p5ySZpzzuDiOwMrdCEh2WdJZCjcmFKc/wEnL+z8fBQrnHoiNWbo+3fiGkOYXBdQp4A==" crossorigin="anonymous"></script>
+    <script>
+    document.addEventListener("DOMContentLoaded", function() {
+        renderMathInElement( document.body, {
+        delimiters: [
+            {left: "$$", right: "$$", display: true},
+            {left: "[%", right: "%]", display: true},
+            {left: "$", right: "$", display: false}
+        ]}
+        );
+    });
+    </script>
+
+
+<script>
+function wrap_img(fn) {
+    if (document.attachEvent ? document.readyState === "complete" : document.readyState !== "loading") {
+        var elements = document.querySelectorAll(".post img");
+        Array.prototype.forEach.call(elements, function(el, i) {
+            if (el.getAttribute("title") && (el.className != "emoji")) {
+                const caption = document.createElement('figcaption');
+                var node = document.createTextNode(el.getAttribute("title"));
+                caption.appendChild(node);
+                const wrapper = document.createElement('figure');
+                wrapper.className = 'image';
+                el.parentNode.insertBefore(wrapper, el);
+                el.parentNode.removeChild(el);
+                wrapper.appendChild(el);
+                wrapper.appendChild(caption);
+            }
+        });
+    } else { document.addEventListener('DOMContentLoaded', fn); }
+}
+window.onload = wrap_img;
+</script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function(){
+    // add link icon to anchor tags
+    var elem = document.querySelectorAll(".anchor-link")
+    elem.forEach(e => (e.innerHTML = '<i class="fas fa-link fa-xs"></i>'));
+    });
+</script>
+</head>
+<body><header class="site-header">
+
+  <div class="wrapper"><a class="site-title" rel="author" href="/My-Journey-/">Blogging My Progress (Not perfections)</a><nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+
+        <div class="trigger"><a class="page-link" href="/My-Journey-/about/">About Me</a><a class="page-link" href="/My-Journey-/search/">Search</a><a class="page-link" href="/My-Journey-/categories/">Tags</a></div>
+      </nav></div>
+</header>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">Categorical Encodings</h1><p class="page-description">a tutorial on categorical encodings, how to use them, and when</p><p class="post-meta post-meta-title"><time class="dt-published" datetime="2021-11-06T00:00:00-05:00" itemprop="datePublished">
+        Nov 6, 2021
+      </time>
+       • <span class="read-time" title="Estimated read time">
+    
+    
+      15 min read
+    
+</span></p>
+
+    
+      <p class="category-tags"><i class="fas fa-tags category-tags-icon"></i></i> 
+      
+        <a class="category-tags-link" href="/My-Journey-/categories/#jupyter">jupyter</a>
+        
+      
+      </p>
+    
+
+    
+      
+        <div class="pb-5 d-flex flex-wrap flex-justify-end">
+          <div class="px-2">
+
+    <a href="https://github.com/O-Hatem/My-Journey-/tree/master/_notebooks/Categorical_Encoding.ipynb" role="button" target="_blank">
+<img class="notebook-badge-image" src="/My-Journey-/assets/badges/github.svg" alt="View On GitHub">
+    </a>
+</div>
+
+          
+          <div class="px-2">
+    <a href="https://colab.research.google.com/github/O-Hatem/My-Journey-/blob/master/_notebooks/Categorical_Encoding.ipynb" target="_blank">
+        <img class="notebook-badge-image" src="/My-Journey-/assets/badges/colab.svg" alt="Open In Colab"/>
+    </a>
+</div>
+        </div>
+      </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <ul class="section-nav">
+<li class="toc-entry toc-h2"><a href="#About">About </a></li>
+<li class="toc-entry toc-h2"><a href="#Data">Data </a></li>
+<li class="toc-entry toc-h2"><a href="#One-Hot-Encoding">One Hot Encoding </a></li>
+<li class="toc-entry toc-h2"><a href="#Sum-Encoding">Sum Encoding </a></li>
+<li class="toc-entry toc-h2"><a href="#Helmert-Encoding">Helmert Encoding </a></li>
+<li class="toc-entry toc-h2"><a href="#Label-Encoding">Label Encoding </a></li>
+<li class="toc-entry toc-h2"><a href="#Ordinal-Encoding">Ordinal Encoding </a></li>
+<li class="toc-entry toc-h2"><a href="#Label-Encoding-+-Ordinal-Encoding">Label Encoding + Ordinal Encoding </a></li>
+<li class="toc-entry toc-h2"><a href="#Binary-Encoding">Binary Encoding </a></li>
+<li class="toc-entry toc-h2"><a href="#Frequency-Encdoing">Frequency Encdoing </a></li>
+<li class="toc-entry toc-h2"><a href="#Mean-Encoding">Mean Encoding </a></li>
+<li class="toc-entry toc-h2"><a href="#M-estimator-Encoding">M-estimator Encoding </a></li>
+<li class="toc-entry toc-h2"><a href="#Weight-of-Evidence-Encoding">Weight of Evidence Encoding </a></li>
+<li class="toc-entry toc-h2"><a href="#Probability-Ratio-Encoding">Probability Ratio Encoding </a></li>
+<li class="toc-entry toc-h2"><a href="#Weight-of-Evidence-Encdoing">Weight of Evidence Encdoing </a></li>
+<li class="toc-entry toc-h2"><a href="#Hashing">Hashing </a></li>
+<li class="toc-entry toc-h2"><a href="#Backward-Difference-Encdoing">Backward Difference Encdoing </a></li>
+<li class="toc-entry toc-h2"><a href="#Leave-One-Out-Encoding">Leave One Out Encoding </a></li>
+<li class="toc-entry toc-h2"><a href="#James-Stein-Encoding">James-Stein Encoding </a></li>
+<li class="toc-entry toc-h2"><a href="#Which-encoding-method-to-use-for-your-dataset?">Which encoding method to use for your dataset? </a></li>
+<li class="toc-entry toc-h2"><a href="#Notes">Notes </a>
+<ul>
+<li class="toc-entry toc-h3"><a href="#Encoders-wise">Encoders-wise </a></li>
+<li class="toc-entry toc-h3"><a href="#Algorithm-wise">Algorithm-wise </a></li>
+</ul>
+</li>
+<li class="toc-entry toc-h2"><a href="#Resources">Resources </a></li>
+</ul><!--
+#################################################
+### THIS FILE WAS AUTOGENERATED! DO NOT EDIT! ###
+#################################################
+# file to edit: _notebooks/Categorical_Encoding.ipynb
+-->
+
+<div class="container" id="notebook-container">
+        
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="About">
+<a class="anchor" href="#About" aria-hidden="true"><span class="octicon octicon-link"></span></a>About<a class="anchor-link" href="#About"> </a>
+</h2>
+<p>Most Machine Learning algorithms can't make use of categorical features untill they are converted into numerical values. that's where "Categorical Encoding" comes into play. There are a lot of different ways to convert categorical features, some are better than other in different situations. I'll be doing my best to clarify how each categorical encoding work and when to use them.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Categorical Encoding can be divided into two broad categories, Nominal (there's no order to the categories) and Oridnal (there's some order into them).</p>
+<p>Examples for Nominal:</p>
+<ul>
+<li>Red, Blue, Black</li>
+<li>Car, Ship, Plane</li>
+</ul>
+<p>Examples for Ordinal:</p>
+<ul>
+<li>Excellent, Very Good, Good, Failed</li>
+<li>Tall, medium, short</li>
+</ul>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<ul>
+<li>the most stable and accurate encoders are target-based encoders with Double Validation: Catboost Encoder, James-Stein Encoder, M-estimator Encoder and Target Encoder</li>
+</ul>
+<ul>
+<li>Using Single Validation will result in much better outcome than not using validation at all. Double validation will achieve more stable score but it would costs more resources and time.</li>
+</ul>
+<ul>
+<li>Regularization is a must for target-based encoders.</li>
+</ul>
+<ul>
+<li>
+<strong>Reference</strong><ul>
+<li>y, y+ = # of target values, # of true target variable</li>
+<li>n, n+ = # of observations for a given value in a categoricla column</li>
+<li>xi, yi = ith value of category and target</li>
+<li>a = regularization hyperparameter, default is prior(mean value of the target)</li>
+</ul>
+</li>
+</ul>
+
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">is_binary_classification</span> <span class="o">=</span> <span class="kc">False</span>
+
+<span class="c1"># set to True, if you data is normally distributed (for James-Stein Encoding)</span>
+<span class="n">is_normally_distributed</span> <span class="o">=</span> <span class="kc">False</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Data">
+<a class="anchor" href="#Data" aria-hidden="true"><span class="octicon octicon-link"></span></a>Data<a class="anchor-link" href="#Data"> </a>
+</h2>
+<p>The <a href="https://github.com/mrdbourke/zero-to-mastery-ml/edit/master/data/car-sales.csv">data</a> we'll be using is from ZeroToMastery: Machine Learning and Data Science Udemy Course.</p>
+
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">'https://raw.githubusercontent.com/mrdbourke/zero-to-mastery-ml/master/data/car-sales.csv'</span><span class="p">)</span>
+<span class="n">data</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<div>
+<style scoped="">
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Make</th>
+      <th>Colour</th>
+      <th>Odometer (KM)</th>
+      <th>Doors</th>
+      <th>Price</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>Toyota</td>
+      <td>White</td>
+      <td>150043</td>
+      <td>4</td>
+      <td>$4,000.00</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>Honda</td>
+      <td>Red</td>
+      <td>87899</td>
+      <td>4</td>
+      <td>$5,000.00</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>Toyota</td>
+      <td>Blue</td>
+      <td>32549</td>
+      <td>3</td>
+      <td>$7,000.00</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>BMW</td>
+      <td>Black</td>
+      <td>11179</td>
+      <td>5</td>
+      <td>$22,000.00</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>Nissan</td>
+      <td>White</td>
+      <td>213095</td>
+      <td>4</td>
+      <td>$3,500.00</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>Toyota</td>
+      <td>Green</td>
+      <td>99213</td>
+      <td>4</td>
+      <td>$4,500.00</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>Honda</td>
+      <td>Blue</td>
+      <td>45698</td>
+      <td>4</td>
+      <td>$7,500.00</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>Honda</td>
+      <td>Blue</td>
+      <td>54738</td>
+      <td>4</td>
+      <td>$7,000.00</td>
+    </tr>
+    <tr>
+      <th>8</th>
+      <td>Toyota</td>
+      <td>White</td>
+      <td>60000</td>
+      <td>4</td>
+      <td>$6,250.00</td>
+    </tr>
+    <tr>
+      <th>9</th>
+      <td>Nissan</td>
+      <td>White</td>
+      <td>31600</td>
+      <td>4</td>
+      <td>$9,700.00</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">data</span><span class="p">[</span><span class="s1">'Price'</span><span class="p">]</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s1">'Price'</span><span class="p">]</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">'$'</span><span class="p">,</span> <span class="s1">''</span><span class="p">)</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">','</span><span class="p">,</span> <span class="s1">''</span><span class="p">)</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">'.'</span><span class="p">,</span> <span class="s1">''</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span><span class="o">/</span><span class="mi">100</span>
+<span class="n">data</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="s1">'Colour'</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">data</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<div>
+<style scoped="">
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Make</th>
+      <th>Odometer (KM)</th>
+      <th>Doors</th>
+      <th>Price</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>Toyota</td>
+      <td>150043</td>
+      <td>4</td>
+      <td>4000.0</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>Honda</td>
+      <td>87899</td>
+      <td>4</td>
+      <td>5000.0</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>Toyota</td>
+      <td>32549</td>
+      <td>3</td>
+      <td>7000.0</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>BMW</td>
+      <td>11179</td>
+      <td>5</td>
+      <td>22000.0</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>Nissan</td>
+      <td>213095</td>
+      <td>4</td>
+      <td>3500.0</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>Toyota</td>
+      <td>99213</td>
+      <td>4</td>
+      <td>4500.0</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>Honda</td>
+      <td>45698</td>
+      <td>4</td>
+      <td>7500.0</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>Honda</td>
+      <td>54738</td>
+      <td>4</td>
+      <td>7000.0</td>
+    </tr>
+    <tr>
+      <th>8</th>
+      <td>Toyota</td>
+      <td>60000</td>
+      <td>4</td>
+      <td>6250.0</td>
+    </tr>
+    <tr>
+      <th>9</th>
+      <td>Nissan</td>
+      <td>31600</td>
+      <td>4</td>
+      <td>9700.0</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">data</span><span class="p">[</span><span class="s1">'Make'</span><span class="p">]</span><span class="o">.</span><span class="n">value_counts</span><span class="p">()</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>Toyota    4
+Honda     3
+Nissan    2
+BMW       1
+Name: Make, dtype: int64</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="One-Hot-Encoding">
+<a class="anchor" href="#One-Hot-Encoding" aria-hidden="true"><span class="octicon octicon-link"></span></a>One Hot Encoding<a class="anchor-link" href="#One-Hot-Encoding"> </a>
+</h2>
+<ul>
+<li>It uses a vector to denote the absence or existence for a category. the length of the vector depends on the number of categories in the feature.</li>
+</ul>
+<ul>
+<li>It creates N columns (N is the number of categories).</li>
+</ul>
+<ul>
+<li>When solving regression problems it's better to keep the columns at N-1 to ensure the correct number of degrees of freedom (N-1)</li>
+</ul>
+<ul>
+<li>It's recommended to Use N columns for classifiction, espically when using a tree-based algorithm. </li>
+</ul>
+<ul>
+<li>It's recommended to use N-1 columns for algorithms that look at all the features simultaneoulsy during training (e.g. SVM, NN, clustring algorithms).</li>
+</ul>
+<ul>
+<li>If the number of categories is big, it will slow the training process. OHE expands the size of your dataset, which makes it memory-inefficient encoder.</li>
+</ul>
+<ul>
+<li>There are several strategies to overcome the memory problem with OHE, one of which is working with sparse not dense data representation.<strong>??</strong>
+</li>
+</ul>
+
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">ohe</span> <span class="o">=</span> <span class="n">ce</span><span class="o">.</span><span class="n">OneHotEncoder</span><span class="p">(</span><span class="n">cols</span><span class="o">=</span><span class="s1">'Make'</span><span class="p">,</span>
+                       <span class="n">use_cat_names</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">one_hot_encoded_data</span> <span class="o">=</span> <span class="n">ohe</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+<span class="n">one_hot_encoded_data</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<div>
+<style scoped="">
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Make_Toyota</th>
+      <th>Make_Honda</th>
+      <th>Make_BMW</th>
+      <th>Make_Nissan</th>
+      <th>Odometer (KM)</th>
+      <th>Doors</th>
+      <th>Price</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>150043</td>
+      <td>4</td>
+      <td>4000.0</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>87899</td>
+      <td>4</td>
+      <td>5000.0</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>32549</td>
+      <td>3</td>
+      <td>7000.0</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>11179</td>
+      <td>5</td>
+      <td>22000.0</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>213095</td>
+      <td>4</td>
+      <td>3500.0</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>99213</td>
+      <td>4</td>
+      <td>4500.0</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>45698</td>
+      <td>4</td>
+      <td>7500.0</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>54738</td>
+      <td>4</td>
+      <td>7000.0</td>
+    </tr>
+    <tr>
+      <th>8</th>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>60000</td>
+      <td>4</td>
+      <td>6250.0</td>
+    </tr>
+    <tr>
+      <th>9</th>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>31600</td>
+      <td>4</td>
+      <td>9700.0</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Sum-Encoding">
+<a class="anchor" href="#Sum-Encoding" aria-hidden="true"><span class="octicon octicon-link"></span></a>Sum Encoding<a class="anchor-link" href="#Sum-Encoding"> </a>
+</h2>
+<ul>
+<li>
+<p>also known as Deviation encoding or Effect encoding</p>
+</li>
+<li>
+<p>Sum Encoding is very similar to OHE and both of them are commonly used in Linear Regression (LR) types of models.</p>
+</li>
+<li>
+<p>However, the difference between them is the interpretation of LR coefficients.<strong>??</strong></p>
+<ul>
+<li>OHE model the intercept represents the mean for the baseline condition and coefficients represents simple effects (the difference between one particular condition and the baseline),</li>
+<li>in Sum Encoder model the intercept represents the grand mean (across all conditions) and the coefficients can be interpreted directly as the main effects.</li>
+</ul>
+</li>
+</ul>
+
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">sum_encoding</span> <span class="o">=</span> <span class="n">ce</span><span class="o">.</span><span class="n">SumEncoder</span><span class="p">(</span><span class="n">cols</span><span class="o">=</span><span class="p">[</span><span class="s1">'Make'</span><span class="p">])</span>
+<span class="n">sum_encoded_data</span> <span class="o">=</span> <span class="n">sum_encoding</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">data</span><span class="p">)</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="s1">'intercept'</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">sum_encoded_data</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<div>
+<style scoped="">
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Make_0</th>
+      <th>Make_1</th>
+      <th>Make_2</th>
+      <th>Odometer (KM)</th>
+      <th>Doors</th>
+      <th>Price</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>1.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>150043</td>
+      <td>4</td>
+      <td>4000.0</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>0.0</td>
+      <td>1.0</td>
+      <td>0.0</td>
+      <td>87899</td>
+      <td>4</td>
+      <td>5000.0</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>1.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>32549</td>
+      <td>3</td>
+      <td>7000.0</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>1.0</td>
+      <td>11179</td>
+      <td>5</td>
+      <td>22000.0</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>-1.0</td>
+      <td>-1.0</td>
+      <td>-1.0</td>
+      <td>213095</td>
+      <td>4</td>
+      <td>3500.0</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>1.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>99213</td>
+      <td>4</td>
+      <td>4500.0</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>0.0</td>
+      <td>1.0</td>
+      <td>0.0</td>
+      <td>45698</td>
+      <td>4</td>
+      <td>7500.0</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>0.0</td>
+      <td>1.0</td>
+      <td>0.0</td>
+      <td>54738</td>
+      <td>4</td>
+      <td>7000.0</td>
+    </tr>
+    <tr>
+      <th>8</th>
+      <td>1.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>60000</td>
+      <td>4</td>
+      <td>6250.0</td>
+    </tr>
+    <tr>
+      <th>9</th>
+      <td>-1.0</td>
+      <td>-1.0</td>
+      <td>-1.0</td>
+      <td>31600</td>
+      <td>4</td>
+      <td>9700.0</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Helmert-Encoding">
+<a class="anchor" href="#Helmert-Encoding" aria-hidden="true"><span class="octicon octicon-link"></span></a>Helmert Encoding<a class="anchor-link" href="#Helmert-Encoding"> </a>
+</h2>
+<ul>
+<li>Helmert coding is a third commonly used type of categorical encoding for regression along with OHE and Sum Encoding.</li>
+</ul>
+<ul>
+<li>This type of encoding can be useful in certain situations where levels of the categorical variable are ordered, say, from lowest to highest, or from smallest to largest.<blockquote>
+<p>The mean of the dependent variable for a level is compared to the mean of the dependent variable over all previous levels. <a href="https://towardsdatascience.com/all-about-categorical-variable-encoding-305f3361fd02">source</a></p>
+</blockquote>
+</li>
+</ul>
+
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">helmert_encoding</span> <span class="o">=</span> <span class="n">ce</span><span class="o">.</span><span class="n">HelmertEncoder</span><span class="p">(</span><span class="n">cols</span><span class="o">=</span><span class="s1">'Make'</span><span class="p">,</span>
+                                     <span class="n">drop_invariant</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">helmert_encoded_data</span> <span class="o">=</span> <span class="n">helmert_encoding</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+<span class="n">helmert_encoded_data</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<div>
+<style scoped="">
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Make_0</th>
+      <th>Make_1</th>
+      <th>Make_2</th>
+      <th>Odometer (KM)</th>
+      <th>Doors</th>
+      <th>Price</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>-1.0</td>
+      <td>-1.0</td>
+      <td>-1.0</td>
+      <td>150043</td>
+      <td>4</td>
+      <td>4000.0</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>1.0</td>
+      <td>-1.0</td>
+      <td>-1.0</td>
+      <td>87899</td>
+      <td>4</td>
+      <td>5000.0</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>-1.0</td>
+      <td>-1.0</td>
+      <td>-1.0</td>
+      <td>32549</td>
+      <td>3</td>
+      <td>7000.0</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>0.0</td>
+      <td>2.0</td>
+      <td>-1.0</td>
+      <td>11179</td>
+      <td>5</td>
+      <td>22000.0</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>3.0</td>
+      <td>213095</td>
+      <td>4</td>
+      <td>3500.0</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>-1.0</td>
+      <td>-1.0</td>
+      <td>-1.0</td>
+      <td>99213</td>
+      <td>4</td>
+      <td>4500.0</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>1.0</td>
+      <td>-1.0</td>
+      <td>-1.0</td>
+      <td>45698</td>
+      <td>4</td>
+      <td>7500.0</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>1.0</td>
+      <td>-1.0</td>
+      <td>-1.0</td>
+      <td>54738</td>
+      <td>4</td>
+      <td>7000.0</td>
+    </tr>
+    <tr>
+      <th>8</th>
+      <td>-1.0</td>
+      <td>-1.0</td>
+      <td>-1.0</td>
+      <td>60000</td>
+      <td>4</td>
+      <td>6250.0</td>
+    </tr>
+    <tr>
+      <th>9</th>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>3.0</td>
+      <td>31600</td>
+      <td>4</td>
+      <td>9700.0</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">helmert_encoding</span><span class="o">.</span><span class="n">mapping</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>[{'col': 'Make',
+  'mapping':     Make_0  Make_1  Make_2
+   1    -1.0    -1.0    -1.0
+   2     1.0    -1.0    -1.0
+   3     0.0     2.0    -1.0
+   4     0.0     0.0     3.0
+  -1     0.0     0.0     0.0
+  -2     0.0     0.0     0.0}]</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Label-Encoding">
+<a class="anchor" href="#Label-Encoding" aria-hidden="true"><span class="octicon octicon-link"></span></a>Label Encoding<a class="anchor-link" href="#Label-Encoding"> </a>
+</h2>
+<p>In this encoding, it assigns a number for each category, ranging from 1 to N.</p>
+<p>The major issue with it is the numbers don't necessarly represent an order (Toyota &gt; Honda &gt; BMW &gt; Nissan).</p>
+
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.preprocessing</span> <span class="kn">import</span> <span class="n">LabelEncoder</span>
+
+<span class="n">label_encoding</span> <span class="o">=</span> <span class="n">LabelEncoder</span><span class="p">()</span>
+<span class="n">label_encoded_data</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+
+<span class="n">label_encoded_data</span><span class="p">[</span><span class="s1">'Make'</span><span class="p">]</span> <span class="o">=</span> <span class="n">label_encoding</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s1">'Make'</span><span class="p">])</span>
+<span class="n">label_encoded_data</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<div>
+<style scoped="">
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Make</th>
+      <th>Odometer (KM)</th>
+      <th>Doors</th>
+      <th>Price</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>3</td>
+      <td>150043</td>
+      <td>4</td>
+      <td>4000.0</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>1</td>
+      <td>87899</td>
+      <td>4</td>
+      <td>5000.0</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>3</td>
+      <td>32549</td>
+      <td>3</td>
+      <td>7000.0</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>0</td>
+      <td>11179</td>
+      <td>5</td>
+      <td>22000.0</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>2</td>
+      <td>213095</td>
+      <td>4</td>
+      <td>3500.0</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>3</td>
+      <td>99213</td>
+      <td>4</td>
+      <td>4500.0</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>1</td>
+      <td>45698</td>
+      <td>4</td>
+      <td>7500.0</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>1</td>
+      <td>54738</td>
+      <td>4</td>
+      <td>7000.0</td>
+    </tr>
+    <tr>
+      <th>8</th>
+      <td>3</td>
+      <td>60000</td>
+      <td>4</td>
+      <td>6250.0</td>
+    </tr>
+    <tr>
+      <th>9</th>
+      <td>2</td>
+      <td>31600</td>
+      <td>4</td>
+      <td>9700.0</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">label_encoding</span><span class="o">.</span><span class="n">classes_</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>array(['BMW', 'Honda', 'Nissan', 'Toyota'], dtype=object)</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Ordinal-Encoding">
+<a class="anchor" href="#Ordinal-Encoding" aria-hidden="true"><span class="octicon octicon-link"></span></a>Ordinal Encoding<a class="anchor-link" href="#Ordinal-Encoding"> </a>
+</h2>
+<p>It mostly works the same way as Label Encoding. Label encoding wouldn't consider whether the feature is ordinal or not. With ordinal encoding we provide what is the order of the categories in a column.</p>
+
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">mapping</span> <span class="o">=</span> <span class="p">[{</span><span class="s2">"col"</span><span class="p">:</span> <span class="s2">"Make"</span><span class="p">,</span> 
+            <span class="s2">"mapping"</span><span class="p">:</span> <span class="p">{</span><span class="s2">"BMW"</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">"Honda"</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="s2">"Nissan"</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span> <span class="s2">"Toyota"</span><span class="p">:</span> <span class="mi">4</span><span class="p">}}]</span>
+
+<span class="n">ordinal_encoding</span> <span class="o">=</span> <span class="n">ce</span><span class="o">.</span><span class="n">OrdinalEncoder</span><span class="p">(</span><span class="n">cols</span><span class="o">=</span><span class="p">[</span><span class="s2">"Make"</span><span class="p">],</span> <span class="n">mapping</span><span class="o">=</span><span class="n">mapping</span><span class="p">)</span>
+<span class="n">ordinal_encoded_data</span> <span class="o">=</span> <span class="n">ordinal_encoding</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+<span class="n">ordinal_encoded_data</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<div>
+<style scoped="">
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Make</th>
+      <th>Odometer (KM)</th>
+      <th>Doors</th>
+      <th>Price</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>4</td>
+      <td>150043</td>
+      <td>4</td>
+      <td>4000.0</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>2</td>
+      <td>87899</td>
+      <td>4</td>
+      <td>5000.0</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>4</td>
+      <td>32549</td>
+      <td>3</td>
+      <td>7000.0</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>1</td>
+      <td>11179</td>
+      <td>5</td>
+      <td>22000.0</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>3</td>
+      <td>213095</td>
+      <td>4</td>
+      <td>3500.0</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>4</td>
+      <td>99213</td>
+      <td>4</td>
+      <td>4500.0</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>2</td>
+      <td>45698</td>
+      <td>4</td>
+      <td>7500.0</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>2</td>
+      <td>54738</td>
+      <td>4</td>
+      <td>7000.0</td>
+    </tr>
+    <tr>
+      <th>8</th>
+      <td>4</td>
+      <td>60000</td>
+      <td>4</td>
+      <td>6250.0</td>
+    </tr>
+    <tr>
+      <th>9</th>
+      <td>3</td>
+      <td>31600</td>
+      <td>4</td>
+      <td>9700.0</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">ordinal_encoding</span><span class="o">.</span><span class="n">category_mapping</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>[{'col': 'Make', 'mapping': {'BMW': 1, 'Honda': 2, 'Nissan': 3, 'Toyota': 4}}]</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Label-Encoding-+-Ordinal-Encoding">
+<a class="anchor" href="#Label-Encoding-+-Ordinal-Encoding" aria-hidden="true"><span class="octicon octicon-link"></span></a>Label Encoding + Ordinal Encoding<a class="anchor-link" href="#Label-Encoding-+-Ordinal-Encoding"> </a>
+</h2>
+<ul>
+<li>
+<p>such transformation should not be used “as is” for several types of models (Linear Models, KNN, Neural Nets, etc.).</p>
+</li>
+<li>
+<p>While applying gradient boosting it could be used only if the type of a column is specified as “category”</p>
+</li>
+</ul>
+<blockquote>
+<p>df[“category_representation”] = df[“category_representation”].astype(“category”)</p>
+</blockquote>
+<ul>
+<li>If you are working with tabular data and your model is gradient boosting (especially LightGBM library), LE is the simplest and efficient way for you to work with categories in terms of memory (the category type in python consumes much less memory than the object type).</li>
+</ul>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Binary-Encoding">
+<a class="anchor" href="#Binary-Encoding" aria-hidden="true"><span class="octicon octicon-link"></span></a>Binary Encoding<a class="anchor-link" href="#Binary-Encoding"> </a>
+</h2>
+<p>Binary Encoding converts the number of categories N into a binary number, and uses every bit as a column. Here we have 4 categories which can be stored in 3 bits, meaning 3 columns.</p>
+
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">binary_encoding</span> <span class="o">=</span> <span class="n">ce</span><span class="o">.</span><span class="n">BinaryEncoder</span><span class="p">(</span><span class="n">cols</span><span class="o">=</span><span class="s1">'Make'</span><span class="p">)</span>
+<span class="n">binary_encoded_data</span> <span class="o">=</span> <span class="n">binary_encoding</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+<span class="n">binary_encoded_data</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<div>
+<style scoped="">
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Make_0</th>
+      <th>Make_1</th>
+      <th>Make_2</th>
+      <th>Odometer (KM)</th>
+      <th>Doors</th>
+      <th>Price</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>150043</td>
+      <td>4</td>
+      <td>4000.0</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>87899</td>
+      <td>4</td>
+      <td>5000.0</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>32549</td>
+      <td>3</td>
+      <td>7000.0</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>0</td>
+      <td>1</td>
+      <td>1</td>
+      <td>11179</td>
+      <td>5</td>
+      <td>22000.0</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>213095</td>
+      <td>4</td>
+      <td>3500.0</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>99213</td>
+      <td>4</td>
+      <td>4500.0</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>45698</td>
+      <td>4</td>
+      <td>7500.0</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>54738</td>
+      <td>4</td>
+      <td>7000.0</td>
+    </tr>
+    <tr>
+      <th>8</th>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>60000</td>
+      <td>4</td>
+      <td>6250.0</td>
+    </tr>
+    <tr>
+      <th>9</th>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>31600</td>
+      <td>4</td>
+      <td>9700.0</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Mapping:</p>
+<ul>
+<li>Toyota: 001</li>
+<li>Honda: 010</li>
+<li>BMW: 011</li>
+<li>Nissan: 100</li>
+</ul>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Frequency-Encdoing">
+<a class="anchor" href="#Frequency-Encdoing" aria-hidden="true"><span class="octicon octicon-link"></span></a>Frequency Encdoing<a class="anchor-link" href="#Frequency-Encdoing"> </a>
+</h2>
+<ul>
+<li>encoding for different sizes of test batch might be different. You should think about it beforehand and make preprocessing of the train as close to the test as possible.</li>
+</ul>
+<ul>
+<li>Nevertheless, Frequency Encoding and RFE are especially efficient when your categorical column has “long tails”, i.e. several frequent values and the remaining ones have only a few examples in the dataset. In such a case, Frequency Encoding would catch the similarity between rare columns.</li>
+</ul>
+
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">frequency_encoded_data</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+
+<span class="n">freq</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">'Make'</span><span class="p">)</span><span class="o">.</span><span class="n">size</span><span class="p">()</span>
+<span class="n">frequency_encoded_data</span><span class="p">[</span><span class="s1">'Make'</span><span class="p">]</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s1">'Make'</span><span class="p">]</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="n">freq</span><span class="p">)</span>
+<span class="n">frequency_encoded_data</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<div>
+<style scoped="">
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Make</th>
+      <th>Odometer (KM)</th>
+      <th>Doors</th>
+      <th>Price</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>4</td>
+      <td>150043</td>
+      <td>4</td>
+      <td>4000.0</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>3</td>
+      <td>87899</td>
+      <td>4</td>
+      <td>5000.0</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>4</td>
+      <td>32549</td>
+      <td>3</td>
+      <td>7000.0</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>1</td>
+      <td>11179</td>
+      <td>5</td>
+      <td>22000.0</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>2</td>
+      <td>213095</td>
+      <td>4</td>
+      <td>3500.0</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>4</td>
+      <td>99213</td>
+      <td>4</td>
+      <td>4500.0</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>3</td>
+      <td>45698</td>
+      <td>4</td>
+      <td>7500.0</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>3</td>
+      <td>54738</td>
+      <td>4</td>
+      <td>7000.0</td>
+    </tr>
+    <tr>
+      <th>8</th>
+      <td>4</td>
+      <td>60000</td>
+      <td>4</td>
+      <td>6250.0</td>
+    </tr>
+    <tr>
+      <th>9</th>
+      <td>2</td>
+      <td>31600</td>
+      <td>4</td>
+      <td>9700.0</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Mean-Encoding">
+<a class="anchor" href="#Mean-Encoding" aria-hidden="true"><span class="octicon octicon-link"></span></a>Mean Encoding<a class="anchor-link" href="#Mean-Encoding"> </a>
+</h2>
+<ul>
+<li>Also Known as Target Encoding, is the go-to categorical encoding used in Kaggle competitions.</li>
+</ul>
+<ul>
+<li>It can figure out the categories that can have simillar effect on predict the target value.</li>
+</ul>
+<ul>
+<li>
+<p>It doesn't affect the volume of the data, thus a faster learning process.</p>
+</li>
+<li>
+<p>The encoded category values are calculated according to the following formulas: <img src="https://miro.medium.com/max/386/1*CQ0CSJY8yBq0P0L4i2ztwQ.png" alt=""></p>
+</li>
+</ul>
+<ul>
+<li>mdl — min data (samples) in leaf, a — smoothing parameter, representing the power of regularization. Recommended values for mdl and a are in the range of 1 to 100.</li>
+</ul>
+<ul>
+<li>It has a huge disadvantage — target leakage: it uses information about the target. Because of the target leakage, model overfits the training data which results in unreliable validation and lower test scores.</li>
+</ul>
+<ul>
+<li>To reduce the effect of target leakage, we may<ol>
+<li>increase regularization (it’s hard to tune those hyperparameters without unreliable validation),</li>
+<li>add random noise to the representation of the category in train dataset (some sort of augmentation), or</li>
+<li>use Double Validation.</li>
+</ol>
+</li>
+</ul>
+
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">mean_encoding</span> <span class="o">=</span> <span class="n">ce</span><span class="o">.</span><span class="n">TargetEncoder</span><span class="p">(</span><span class="n">cols</span><span class="o">=</span><span class="s1">'Make'</span><span class="p">,</span> <span class="n">smoothing</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">mean_encoded_data</span> <span class="o">=</span> <span class="n">mean_encoding</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="s1">'Price'</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">),</span> <span class="n">data</span><span class="p">[</span><span class="s1">'Price'</span><span class="p">])</span>
+<span class="n">mean_encoded_data</span><span class="p">[</span><span class="s1">'Price'</span><span class="p">]</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s1">'Price'</span><span class="p">]</span>
+<span class="n">mean_encoded_data</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<div>
+<style scoped="">
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Make</th>
+      <th>Odometer (KM)</th>
+      <th>Doors</th>
+      <th>Price</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>5437.5</td>
+      <td>150043</td>
+      <td>4</td>
+      <td>4000.0</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>6500.0</td>
+      <td>87899</td>
+      <td>4</td>
+      <td>5000.0</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>5437.5</td>
+      <td>32549</td>
+      <td>3</td>
+      <td>7000.0</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>7645.0</td>
+      <td>11179</td>
+      <td>5</td>
+      <td>22000.0</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>6600.0</td>
+      <td>213095</td>
+      <td>4</td>
+      <td>3500.0</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>5437.5</td>
+      <td>99213</td>
+      <td>4</td>
+      <td>4500.0</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>6500.0</td>
+      <td>45698</td>
+      <td>4</td>
+      <td>7500.0</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>6500.0</td>
+      <td>54738</td>
+      <td>4</td>
+      <td>7000.0</td>
+    </tr>
+    <tr>
+      <th>8</th>
+      <td>5437.5</td>
+      <td>60000</td>
+      <td>4</td>
+      <td>6250.0</td>
+    </tr>
+    <tr>
+      <th>9</th>
+      <td>6600.0</td>
+      <td>31600</td>
+      <td>4</td>
+      <td>9700.0</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="M-estimator-Encoding">
+<a class="anchor" href="#M-estimator-Encoding" aria-hidden="true"><span class="octicon octicon-link"></span></a>M-estimator Encoding<a class="anchor-link" href="#M-estimator-Encoding"> </a>
+</h2>
+<ul>
+<li>M-Estimate Encoder is a simplified version of Target Encoder. It has only one hyperparameter — m, which represents the power of regularization </li>
+</ul>
+<p><img src="https://miro.medium.com/max/252/0*zZNdDd_6wpQq_-k5.png" alt=""></p>
+<ul>
+<li>In different sources, you may find another formula of M-Estimator. Instead of y+ there is n in the denominator. I found that such representation has similar scores.</li>
+</ul>
+
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">m_estimator_encoding</span> <span class="o">=</span> <span class="n">ce</span><span class="o">.</span><span class="n">MEstimateEncoder</span><span class="p">(</span><span class="n">cols</span><span class="o">=</span><span class="s1">'Make'</span><span class="p">,</span>
+                                           <span class="n">m</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">m_estimator_encoded_data</span> <span class="o">=</span> <span class="n">m_estimator_encoding</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="s1">'Price'</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">),</span> <span class="n">data</span><span class="p">[</span><span class="s1">'Price'</span><span class="p">])</span>
+<span class="n">m_estimator_encoded_data</span><span class="p">[</span><span class="s1">'Price'</span><span class="p">]</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s1">'Price'</span><span class="p">]</span>
+<span class="n">m_estimator_encoded_data</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<div>
+<style scoped="">
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Make</th>
+      <th>Odometer (KM)</th>
+      <th>Doors</th>
+      <th>Price</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>5879.000000</td>
+      <td>150043</td>
+      <td>4</td>
+      <td>4000.0</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>6786.250000</td>
+      <td>87899</td>
+      <td>4</td>
+      <td>5000.0</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>5879.000000</td>
+      <td>32549</td>
+      <td>3</td>
+      <td>7000.0</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>14822.500000</td>
+      <td>11179</td>
+      <td>5</td>
+      <td>22000.0</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>6948.333333</td>
+      <td>213095</td>
+      <td>4</td>
+      <td>3500.0</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>5879.000000</td>
+      <td>99213</td>
+      <td>4</td>
+      <td>4500.0</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>6786.250000</td>
+      <td>45698</td>
+      <td>4</td>
+      <td>7500.0</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>6786.250000</td>
+      <td>54738</td>
+      <td>4</td>
+      <td>7000.0</td>
+    </tr>
+    <tr>
+      <th>8</th>
+      <td>5879.000000</td>
+      <td>60000</td>
+      <td>4</td>
+      <td>6250.0</td>
+    </tr>
+    <tr>
+      <th>9</th>
+      <td>6948.333333</td>
+      <td>31600</td>
+      <td>4</td>
+      <td>9700.0</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Weight-of-Evidence-Encoding">
+<a class="anchor" href="#Weight-of-Evidence-Encoding" aria-hidden="true"><span class="octicon octicon-link"></span></a>Weight of Evidence Encoding<a class="anchor-link" href="#Weight-of-Evidence-Encoding"> </a>
+</h2>
+<h2 id="Probability-Ratio-Encoding">
+<a class="anchor" href="#Probability-Ratio-Encoding" aria-hidden="true"><span class="octicon octicon-link"></span></a>Probability Ratio Encoding<a class="anchor-link" href="#Probability-Ratio-Encoding"> </a>
+</h2>
+<p>both are very similar, and both are explanied in this <a href="https://towardsdatascience.com/all-about-categorical-variable-encoding-305f3361fd02">article</a>.</p>
+<p>WOE and Probability Ratio both works with binary classification problems.</p>
+<p>i won't go over them because i can't grasp it completly. even though i understand how the code works and the instructions of the algorithm. i can't completly understand how it can affect the learning process.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Weight-of-Evidence-Encdoing">
+<a class="anchor" href="#Weight-of-Evidence-Encdoing" aria-hidden="true"><span class="octicon octicon-link"></span></a>Weight of Evidence Encdoing<a class="anchor-link" href="#Weight-of-Evidence-Encdoing"> </a>
+</h2>
+<ul>
+<li>is a commonly used target-based encoder in credit scoring.</li>
+</ul>
+<ul>
+<li>It is a measure of the “strength” of a grouping for separating good and bad risk.</li>
+</ul>
+<ul>
+<li>it might lead to target leakage and overfit. To avoid that, regularization parameter a is induced and WoE is calculated in the following way</li>
+</ul>
+<p><img src="https://miro.medium.com/max/451/1*B2A6dKhKrMW7kqfZmm7HjQ.png" alt=""></p>
+
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">if</span> <span class="n">is_binary_classification</span><span class="p">:</span>
+    <span class="n">woe_encoding</span> <span class="o">=</span> <span class="n">ce</span><span class="o">.</span><span class="n">WOEEncoder</span><span class="p">(</span><span class="n">cols</span><span class="o">=</span><span class="s1">'Make'</span><span class="p">)</span>
+    <span class="n">woe_encoded_data</span> <span class="o">=</span> <span class="n">woe_encoding</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="s1">'Price'</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">),</span> <span class="n">data</span><span class="p">[</span><span class="s1">'Price'</span><span class="p">])</span>
+    <span class="n">woe_encoded_data</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Hashing">
+<a class="anchor" href="#Hashing" aria-hidden="true"><span class="octicon octicon-link"></span></a>Hashing<a class="anchor-link" href="#Hashing"> </a>
+</h2>
+<blockquote>
+<p>With Hashing, the number of dimensions will be far less than the number of dimensions with encoding like One Hot Encoding. This method is advantageous when the cardinality of categorical is very high.</p>
+</blockquote>
+
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">hashing_encoding</span> <span class="o">=</span> <span class="n">ce</span><span class="o">.</span><span class="n">HashingEncoder</span><span class="p">(</span><span class="n">cols</span><span class="o">=</span><span class="s1">'Make'</span><span class="p">)</span>
+<span class="n">hashing_encoded_data</span> <span class="o">=</span> <span class="n">hashing_encoding</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+<span class="n">hashing_encoded_data</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<div>
+<style scoped="">
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>col_0</th>
+      <th>col_1</th>
+      <th>col_2</th>
+      <th>col_3</th>
+      <th>col_4</th>
+      <th>col_5</th>
+      <th>col_6</th>
+      <th>col_7</th>
+      <th>Odometer (KM)</th>
+      <th>Doors</th>
+      <th>Price</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>150043</td>
+      <td>4</td>
+      <td>4000.0</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>87899</td>
+      <td>4</td>
+      <td>5000.0</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>32549</td>
+      <td>3</td>
+      <td>7000.0</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>11179</td>
+      <td>5</td>
+      <td>22000.0</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>213095</td>
+      <td>4</td>
+      <td>3500.0</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>99213</td>
+      <td>4</td>
+      <td>4500.0</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>45698</td>
+      <td>4</td>
+      <td>7500.0</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>54738</td>
+      <td>4</td>
+      <td>7000.0</td>
+    </tr>
+    <tr>
+      <th>8</th>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>60000</td>
+      <td>4</td>
+      <td>6250.0</td>
+    </tr>
+    <tr>
+      <th>9</th>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>31600</td>
+      <td>4</td>
+      <td>9700.0</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Backward-Difference-Encdoing">
+<a class="anchor" href="#Backward-Difference-Encdoing" aria-hidden="true"><span class="octicon octicon-link"></span></a>Backward Difference Encdoing<a class="anchor-link" href="#Backward-Difference-Encdoing"> </a>
+</h2>
+<ul>
+<li>This Tequnique falls under the contrast coding system for categorical features.</li>
+<li>It creates N-1 columns (N is no. of columns)</li>
+<li>It compares the mean of the dependent variable with the mean of the dependent variable for the prior level</li>
+</ul>
+
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">bd_encoding</span> <span class="o">=</span> <span class="n">ce</span><span class="o">.</span><span class="n">BackwardDifferenceEncoder</span><span class="p">(</span><span class="n">cols</span><span class="o">=</span><span class="s1">'Make'</span><span class="p">,</span> 
+                                           <span class="n">drop_invariant</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">bd_encoded_data</span> <span class="o">=</span> <span class="n">bd_encoding</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+<span class="n">bd_encoded_data</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<div>
+<style scoped="">
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Make_0</th>
+      <th>Make_1</th>
+      <th>Make_2</th>
+      <th>Odometer (KM)</th>
+      <th>Doors</th>
+      <th>Price</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>-0.75</td>
+      <td>-0.5</td>
+      <td>-0.25</td>
+      <td>150043</td>
+      <td>4</td>
+      <td>4000.0</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>0.25</td>
+      <td>-0.5</td>
+      <td>-0.25</td>
+      <td>87899</td>
+      <td>4</td>
+      <td>5000.0</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>-0.75</td>
+      <td>-0.5</td>
+      <td>-0.25</td>
+      <td>32549</td>
+      <td>3</td>
+      <td>7000.0</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>0.25</td>
+      <td>0.5</td>
+      <td>-0.25</td>
+      <td>11179</td>
+      <td>5</td>
+      <td>22000.0</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>0.25</td>
+      <td>0.5</td>
+      <td>0.75</td>
+      <td>213095</td>
+      <td>4</td>
+      <td>3500.0</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>-0.75</td>
+      <td>-0.5</td>
+      <td>-0.25</td>
+      <td>99213</td>
+      <td>4</td>
+      <td>4500.0</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>0.25</td>
+      <td>-0.5</td>
+      <td>-0.25</td>
+      <td>45698</td>
+      <td>4</td>
+      <td>7500.0</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>0.25</td>
+      <td>-0.5</td>
+      <td>-0.25</td>
+      <td>54738</td>
+      <td>4</td>
+      <td>7000.0</td>
+    </tr>
+    <tr>
+      <th>8</th>
+      <td>-0.75</td>
+      <td>-0.5</td>
+      <td>-0.25</td>
+      <td>60000</td>
+      <td>4</td>
+      <td>6250.0</td>
+    </tr>
+    <tr>
+      <th>9</th>
+      <td>0.25</td>
+      <td>0.5</td>
+      <td>0.75</td>
+      <td>31600</td>
+      <td>4</td>
+      <td>9700.0</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Looks very similar to Helmert Encoding</p>
+
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">bd_encoding</span><span class="o">.</span><span class="n">mapping</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>[{'col': 'Make',
+  'mapping':     Make_0  Make_1  Make_2
+   1   -0.75    -0.5   -0.25
+   2    0.25    -0.5   -0.25
+   3    0.25     0.5   -0.25
+   4    0.25     0.5    0.75
+  -1    0.00     0.0    0.00
+  -2    0.00     0.0    0.00}]</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Leave-One-Out-Encoding">
+<a class="anchor" href="#Leave-One-Out-Encoding" aria-hidden="true"><span class="octicon octicon-link"></span></a>Leave One Out Encoding<a class="anchor-link" href="#Leave-One-Out-Encoding"> </a>
+</h2>
+<blockquote>
+<p>This is very similar to target encoding but excludes the current row’s target when calculating the mean target for a level to reduce outliers.</p>
+</blockquote>
+
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">loo_encoding</span> <span class="o">=</span> <span class="n">ce</span><span class="o">.</span><span class="n">LeaveOneOutEncoder</span><span class="p">(</span><span class="n">cols</span><span class="o">=</span><span class="s1">'Make'</span><span class="p">)</span>
+<span class="n">loo_encoded_data</span> <span class="o">=</span> <span class="n">loo_encoding</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="s1">'Price'</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">),</span> <span class="n">data</span><span class="p">[</span><span class="s1">'Price'</span><span class="p">])</span>
+<span class="n">loo_encoded_data</span><span class="p">[</span><span class="s1">'Price'</span><span class="p">]</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s1">'Price'</span><span class="p">]</span>
+<span class="n">loo_encoded_data</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<div>
+<style scoped="">
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Make</th>
+      <th>Odometer (KM)</th>
+      <th>Doors</th>
+      <th>Price</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>5916.666667</td>
+      <td>150043</td>
+      <td>4</td>
+      <td>4000.0</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>7250.000000</td>
+      <td>87899</td>
+      <td>4</td>
+      <td>5000.0</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>4916.666667</td>
+      <td>32549</td>
+      <td>3</td>
+      <td>7000.0</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>7645.000000</td>
+      <td>11179</td>
+      <td>5</td>
+      <td>22000.0</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>9700.000000</td>
+      <td>213095</td>
+      <td>4</td>
+      <td>3500.0</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>5750.000000</td>
+      <td>99213</td>
+      <td>4</td>
+      <td>4500.0</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>6000.000000</td>
+      <td>45698</td>
+      <td>4</td>
+      <td>7500.0</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>6250.000000</td>
+      <td>54738</td>
+      <td>4</td>
+      <td>7000.0</td>
+    </tr>
+    <tr>
+      <th>8</th>
+      <td>5166.666667</td>
+      <td>60000</td>
+      <td>4</td>
+      <td>6250.0</td>
+    </tr>
+    <tr>
+      <th>9</th>
+      <td>3500.000000</td>
+      <td>31600</td>
+      <td>4</td>
+      <td>9700.0</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="James-Stein-Encoding">
+<a class="anchor" href="#James-Stein-Encoding" aria-hidden="true"><span class="octicon octicon-link"></span></a>James-Stein Encoding<a class="anchor-link" href="#James-Stein-Encoding"> </a>
+</h2>
+<ul>
+<li>
+<p>Target-based Encoder</p>
+</li>
+<li>
+<p>Returns a weighted Average of:</p>
+<ul>
+<li>The mean target value for the observed feature value.</li>
+<li>The mean for the whole target value</li>
+</ul>
+</li>
+<li>
+<p>It tends to shrinks the average toard the overall average.</p>
+</li>
+<li>
+<p>One Major issue, it was defined only for normal distributions</p>
+</li>
+</ul>
+
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">if</span> <span class="n">is_normally_distributed</span><span class="p">:</span>
+    <span class="n">james_stein_encoding</span> <span class="o">=</span> <span class="n">ce</span><span class="o">.</span><span class="n">JamesSteinEncoder</span><span class="p">(</span><span class="n">cols</span><span class="o">=</span><span class="p">[</span><span class="s1">'Make'</span><span class="p">])</span>
+    <span class="n">james_stein_encoded_data</span> <span class="o">=</span> <span class="n">james_stein_encoding</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="s1">'Price'</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">),</span> <span class="n">data</span><span class="p">[</span><span class="s1">'Price'</span><span class="p">])</span>
+    <span class="n">james_stein_encoded_data</span><span class="p">[</span><span class="s1">'Price'</span><span class="p">]</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s1">'Price'</span><span class="p">]</span>
+    <span class="n">james_stein_encoded_data</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Which-encoding-method-to-use-for-your-dataset?">
+<a class="anchor" href="#Which-encoding-method-to-use-for-your-dataset?" aria-hidden="true"><span class="octicon octicon-link"></span></a>Which encoding method to use for your dataset?<a class="anchor-link" href="#Which-encoding-method-to-use-for-your-dataset?"> </a>
+</h2>
+<p>It's recommended to follow the following chart to figure out which one best suited for your dataset.</p>
+<p>You can test on multiple methods on a sample of your dataset, it should give you a good view of which one is better for your situation.</p>
+<p><img src="https://miro.medium.com/max/1000/0*NBVi7M3sGyiUSyd5.png" alt=""></p>
+
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.linear_model</span> <span class="kn">import</span> <span class="n">LinearRegression</span>
+
+<span class="n">results</span> <span class="o">=</span> <span class="p">{}</span>
+
+<span class="n">encoded_datasets</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">"One Hot Encoding"</span><span class="p">:</span> <span class="n">one_hot_encoded_data</span><span class="p">,</span>
+    <span class="s2">"Label Encoding"</span><span class="p">:</span> <span class="n">label_encoded_data</span><span class="p">,</span>
+    <span class="s2">"Ordinal Encoding"</span><span class="p">:</span> <span class="n">ordinal_encoded_data</span><span class="p">,</span>
+    <span class="s2">"Helmert Encoding"</span><span class="p">:</span> <span class="n">helmert_encoded_data</span><span class="p">,</span>
+    <span class="s2">"Binary Encoding"</span><span class="p">:</span> <span class="n">binary_encoded_data</span><span class="p">,</span>
+    <span class="s2">"Frequency Encoding"</span><span class="p">:</span> <span class="n">frequency_encoded_data</span><span class="p">,</span>
+    <span class="s2">"Mean Encoding"</span><span class="p">:</span> <span class="n">mean_encoded_data</span><span class="p">,</span>
+    <span class="s2">"Hashing"</span><span class="p">:</span> <span class="n">hashing_encoded_data</span><span class="p">,</span>
+    <span class="s2">"Backward Difference Encoding"</span><span class="p">:</span> <span class="n">bd_encoded_data</span><span class="p">,</span>
+    <span class="s2">"Leave-One-Out"</span><span class="p">:</span> <span class="n">loo_encoded_data</span><span class="p">,</span>
+    <span class="s2">"M-Estimator Encoding"</span><span class="p">:</span> <span class="n">m_estimator_encoded_data</span><span class="p">,</span>
+<span class="p">}</span>
+
+<span class="k">if</span> <span class="n">is_normally_distributed</span><span class="p">:</span>
+    <span class="n">encoded_datasets</span><span class="p">[</span><span class="s2">"James-Stein Encoding"</span><span class="p">]</span> <span class="o">=</span> <span class="n">james_stein_encoded_data</span>
+<span class="k">if</span> <span class="n">is_binary_classification</span><span class="p">:</span>
+    <span class="n">encoded_datasets</span><span class="p">[</span><span class="s2">"Weight of Evidence Encoding"</span><span class="p">]</span> <span class="o">=</span> <span class="n">woe_encoded_data</span>
+
+
+<span class="k">for</span> <span class="n">encoding_name</span><span class="p">,</span> <span class="n">encoded_dataset</span> <span class="ow">in</span> <span class="n">encoded_datasets</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+    
+    <span class="c1"># Split data</span>
+    <span class="n">X</span> <span class="o">=</span> <span class="n">encoded_dataset</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="s1">'Price'</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">y</span> <span class="o">=</span> <span class="n">encoded_dataset</span><span class="p">[</span><span class="s1">'Price'</span><span class="p">]</span>
+    
+    <span class="n">model</span> <span class="o">=</span> <span class="n">LinearRegression</span><span class="p">()</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+    
+    <span class="n">score</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">score</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+    
+    <span class="n">results</span><span class="p">[</span><span class="n">encoding_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">score</span><span class="p">;</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>LinearRegression()</pre>
+</div>
+
+</div>
+
+<div class="output_area">
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>LinearRegression()</pre>
+</div>
+
+</div>
+
+<div class="output_area">
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>LinearRegression()</pre>
+</div>
+
+</div>
+
+<div class="output_area">
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>LinearRegression()</pre>
+</div>
+
+</div>
+
+<div class="output_area">
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>LinearRegression()</pre>
+</div>
+
+</div>
+
+<div class="output_area">
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>LinearRegression()</pre>
+</div>
+
+</div>
+
+<div class="output_area">
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>LinearRegression()</pre>
+</div>
+
+</div>
+
+<div class="output_area">
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>LinearRegression()</pre>
+</div>
+
+</div>
+
+<div class="output_area">
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>LinearRegression()</pre>
+</div>
+
+</div>
+
+<div class="output_area">
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>LinearRegression()</pre>
+</div>
+
+</div>
+
+<div class="output_area">
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>LinearRegression()</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="nb">sorted</span><span class="p">(</span><span class="n">results</span><span class="o">.</span><span class="n">items</span><span class="p">(),</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span><span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">reverse</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>[('One Hot Encoding', 0.9945536929215048),
+ ('Helmert Encoding', 0.9945536929215048),
+ ('Binary Encoding', 0.9945536929215048),
+ ('Hashing', 0.9945536929215048),
+ ('Backward Difference Encoding', 0.9945536929215048),
+ ('M-Estimator Encoding', 0.9801482890347663),
+ ('Frequency Encoding', 0.8508034307880376),
+ ('Leave-One-Out', 0.8166612326802211),
+ ('Mean Encoding', 0.813764093905115),
+ ('Label Encoding', 0.7735336830068426),
+ ('Ordinal Encoding', 0.7735336830068424)]</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Notes">
+<a class="anchor" href="#Notes" aria-hidden="true"><span class="octicon octicon-link"></span></a>Notes<a class="anchor-link" href="#Notes"> </a>
+</h2>
+<h3 id="Encoders-wise">
+<a class="anchor" href="#Encoders-wise" aria-hidden="true"><span class="octicon octicon-link"></span></a>Encoders-wise<a class="anchor-link" href="#Encoders-wise"> </a>
+</h3>
+<ul>
+<li>
+<p>LE and OE are bad with Linear Models, KNN, and Neural Nets</p>
+</li>
+<li>
+<p>OHE is good for tree-based algorithms(and for regression if it produces N-1 columns instead of N)</p>
+</li>
+<li>
+<p>Helmert Encoding and Sum Encoding is good for Linear models</p>
+</li>
+</ul>
+<h3 id="Algorithm-wise">
+<a class="anchor" href="#Algorithm-wise" aria-hidden="true"><span class="octicon octicon-link"></span></a>Algorithm-wise<a class="anchor-link" href="#Algorithm-wise"> </a>
+</h3>
+<ul>
+<li>With Regression, SVM, NN, and clusting algorithms, it's better to use an encoder that generates N-1 columns</li>
+</ul>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Resources">
+<a class="anchor" href="#Resources" aria-hidden="true"><span class="octicon octicon-link"></span></a>Resources<a class="anchor-link" href="#Resources"> </a>
+</h2>
+<p><a href="https://towardsdatascience.com/benchmarking-categorical-encoders-9c322bd77ee8">Benchmarking Categorical Encoders</a></p>
+<p><a href="https://towardsdatascience.com/all-about-categorical-variable-encoding-305f3361fd02">All About Categorical Variable Encoding</a></p>
+<p>To-Read</p>
+<p><a href="http://psych.colorado.edu/~carey/Courses/PSYC5741/handouts/Coding%20Categorical%20Variables%202006-03-03.pdf">Coding Categorical Variables (Research Paper)</a></p>
+
+</div>
+</div>
+</div>
+</div>
+
+
+
+  </div><!-- from https://github.com/utterance/utterances -->
+<script src="https://utteranc.es/client.js"
+        repo="O-Hatem/My-Journey-"
+        issue-term="title"
+        label="blogpost-comment"
+        theme="github-light"
+        crossorigin="anonymous"
+        async>
+</script><a class="u-url" href="/My-Journey-/jupyter/2021/11/06/Categorical_Encoding.html" hidden></a>
+</article>
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/My-Journey-/"></data>
+
+  <div class="wrapper">
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col">
+        <p class="feed-subscribe">
+          <a href="/My-Journey-/feed.xml">
+            <svg class="svg-icon orange">
+              <use xlink:href="/My-Journey-/assets/minima-social-icons.svg#rss"></use>
+            </svg><span>Subscribe</span>
+          </a>
+        </p>
+      </div>
+      <div class="footer-col">
+        <p>This is where i will be blogging (hopefully) every step in my Journey to be a Data Scientist</p>
+      </div>
+    </div>
+
+    <div class="social-links"><ul class="social-media-list"><li><a rel="me" href="https://github.com/https%3A%2F%2Fgithub.com%2FO-Hatem" title="https://github.com/O-Hatem"><svg class="svg-icon grey"><use xlink:href="/My-Journey-/assets/minima-social-icons.svg#github"></use></svg></a></li></ul>
+</div>
+
+  </div>
+
+</footer>
+</body>
+
+</html>
