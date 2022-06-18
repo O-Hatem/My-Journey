@@ -14,7 +14,7 @@ github_username: O-Hatem
 
 # OPTIONAL: override baseurl and url if using a custom domain
 # Note: leave out the trailing / from this value. 
-url: "https://O-Hatem.github.io" # the base hostname & protocol for your site, e.g. http://example.com
+url: "https://www.github.com" # the base hostname & protocol for your site, e.g. http://example.com
 
 ###########################################################
 #########  Special Instructions for baseurl ###############
@@ -40,7 +40,7 @@ baseurl: "/My-Journey" # the subpath of your site, e.g. "/blog".
 minima:
   social_links:
     twitter: 
-    github: https://github.com/O-Hatem
+    github: https://www.github.com/O-Hatem
 
 # Set this to true to get LaTeX math equation support
 use_math: true
@@ -72,7 +72,7 @@ include:
 # This specifies what badges are turned on by default for notebook posts.
 default_badges:
   github: true
-  binder: false
+  binder: true
   colab: true
 
 # Escape HTML in post descriptions
