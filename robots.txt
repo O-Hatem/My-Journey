@@ -1,1 +1,1 @@
-Sitemap: https://www.github.com/My-Journey/sitemap.xml
+Sitemap: /My-Journey/sitemap.xml
