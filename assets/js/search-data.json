@@ -55,17 +55,6 @@
         
     
   
-    
-        ,"post5": {
-            "title": "My Roadmap for Becoming a Data Scientist",
-            "content": "RoadMap . Data Science and Machine Learning Udemy course. (finished in about 3 months) . Just today (Oct 25th, 2021), i almost the couse. It was very since and taught me how to write code for machine learning models with a small transefer learning model in the end. I learned how to : . Preprocess Data (Cleaning, Imputing, etc) | Use Numpy, Pandas for accessing and manipulating data in dataframes | Use Matplotlib to visualize data and figure out how my model is performing | Write an end-to-end machine learning models for regression and classification problems. | Use TensorFlow and TensorFlow Hub with Keras to build a transefer learning model | . but the course lackes the theortical part of machine learning and deep learning which is what i am looking to do next. . | Mathematics for Machine Leaning Coursea course . | What i’m looking to do next . Andrew Ng Youtube playlist . Data Science from Scratch Book from O’reilly . Notes . I should not stop doing Kaggle comeptitions and should be coming up with my own ideas while taking a therotical course. I’ll feel discouraged to compelete the course if all i see is the math and equations. And to not forget the practical part. | . Storytelling . (Oct 27th, 2021) After a little bit of thinking i decided to start with Andrew Ng’s Machine Learning Playlist on YouTube. But before that, i’d like to review all the math needed to complete the course which include: Linear Algebra | Multi-variable calculas | Probability and Statistics | . The Mathematics for Machine Learning Coursera course covers the first two points plus PCA (principal component analysis). so after finishing it, i’ll search for a convinent course for probability and statistics for machine learning. . | (Jan 12th, 2021) I found a good youtube playlist for probability and statistics and i think it’s pretty good. videos are short and it covers a lot of topics. link. That’s a website with a several probability serieses. link There is a reference file about probability in Andrew Ng course . | A nice deep learning playlist i found on youtube with all the material. link | . Deadlines . Finish the ZTM:Data Science and Machine Learning course Start on: (idk exactly but around August) | Deadline on: Nov 25th, 2021 | Finished on: Oct 25th, 2021 (one month early) | . | Mathematics for Machine Learning: Linear Algebra (~18h course) Start on: Oct 27th, 2021 | Deadline on: Nov 27th, 2021 | Finished on: Dec 3rd, 2021 (one week late) | . | Mathematics for Machine Learning: Multivariate Calculas (~18h course) Start on: Dec 4th, 2021 | Deadline on: Jan 17th, 2021 | Finished on: TBD | . | .",
-            "url": "https://o-hatem.github.io/My-Journey/markdown/2021/10/25/RoadMap.html",
-            "relUrl": "/markdown/2021/10/25/RoadMap.html",
-            "date": " • Oct 25, 2021"
-        }
-        
-    
-  
 
   
   
