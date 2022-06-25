@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd" xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 <url>
+<loc>https://o-hatem.github.io/My-Journey/markdown/1999/09/27/Questions.html</loc>
+<lastmod>1999-09-27T00:00:00-05:00</lastmod>
+</url>
+<url>
 <loc>https://o-hatem.github.io/My-Journey/jupyter/2022/01/22/Categorical-Encoding.html</loc>
 <lastmod>2022-01-22T00:00:00-06:00</lastmod>
 </url>
