@@ -21,3 +21,17 @@ title: Questions
 
 
 # 3. What are the main topics in books through history? does the subjects written about 700 years ago the same as 400 years ago the same as 100 years ago the same as now?
+
+
+# Egypt in numbers. How is Egypt doing in the last few decades?
+### i can use [Egypt's wikipedia a reference to the informatino to gather](https://en.wikipedia.org/wiki/Egypt)
+* Land area
+* Population, male population, female population
+* Education levels
+* Average Income
+* Most imported and exported goods
+* [Internet Freedom Index](https://freedomhouse.org/countries/freedom-net/scores?sort=asc&order=Country)
+* Freedom of Speech
+* GDP, GDP per capita
+* Gini
+* UN HDI
